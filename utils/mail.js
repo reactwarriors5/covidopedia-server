@@ -14,14 +14,14 @@ export const resetEmail = async (userEmail, shortCode) => {
   // send mail with defined transport object
   let info = await transporter
     .sendMail({
-      from: '"Blink LTD" <support@blink.com>', // sender address
+      from: '"Covidopedia" <support@covidopedia.com>', // sender address
       to: userEmail, // list of receivers or a single receiver
-      subject: 'Password Reset Request | Blink', // Subject line
+      subject: 'Password Reset Request | Covidopedia', // Subject line
       html: `
       <h1>Reset password</h1>
       <p>Use this code to reset your password</p>
       <h2 style="color:red;">${shortCode}</h2>
-      <i>blink.com</i>`, // html body
+      <b>&#169; Covidopedia</b>`, // html body
     })
     .catch(error => {
       console.log(error)

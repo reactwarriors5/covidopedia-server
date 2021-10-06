@@ -8,10 +8,10 @@ export const requireSignin = expressJwt({
   algorithms: ['HS256'],
 })
 
-export const isInstructor = async (req, res, next) => {
+export const isDoctor = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id).exec()
-    if (!user.role.includes('Instructor')) {
+    if (!user.role.includes('Doctor')) {
       return res.sendStatus(403)
     } else {
       next()
