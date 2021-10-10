@@ -20,13 +20,25 @@ const userSchema = new Schema(
       min: 6,
       max: 64,
     },
-    picture: {
+    image: {
       type: String,
       default: '/avatar.png',
     },
     role: {
       type: String,
       default: 'user',
+    },
+    department: {
+      type: String,
+      trim: true,
+    },
+    degree: {
+      type: String,
+      trim: true,
+    },
+    experience: {
+      type: String,
+      trim: true,
     },
     stripe_account_id: '',
     stripe_seller: {},
