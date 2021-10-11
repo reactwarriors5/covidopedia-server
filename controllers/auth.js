@@ -156,3 +156,41 @@ export const resetPassword = async (req, res) => {
     return res.status(400).send('Error! Try again.')
   }
 }
+
+//Doctor Registration
+export const doctorRegistration = async (req, res) => {
+  try {
+    // Data From Front-End
+    const { name, email, image, degree, experience, department } = req.body
+    console.log(req.body);
+
+    // Email validation
+    if (!email) return res.status(400).send('Email is required')
+    let userExist = await User.findOne({ email }).exec()
+    if (!userExist) return res.status(400).send('you have to give the email with which you logged in')
+    
+    //Compare with exiting email & update
+    const user = await User.findOneAndUpdate(
+      { 
+        email
+      },
+      { 
+        name,
+        image,
+        degree, 
+        experience, 
+        department
+      },
+      {
+        new:true
+      }
+    ).exec()
+    console.log(user);
+    if (!user) return res.status(400).send('Wrong code! Try again.')
+    
+    //Send success response to front-end
+    return res.json({ ok: true })
+  } catch (err) {
+    return res.status(400).send('Error. Try again.')
+  }
+}
