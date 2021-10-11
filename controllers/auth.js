@@ -162,7 +162,22 @@ export const doctorRegistration = async (req, res) => {
   try {
     // Data From Front-End
     const { name, email, image, degree, experience, department } = req.body
-    console.log(req.body);
+    // console.log(req.body);
+
+    // Name validation
+    if (!name) return res.status(400).send('Name is required')
+
+    // image validation
+    if (!image) return res.status(400).send('image is required')
+
+    // degree validation
+    if (!degree) return res.status(400).send('degree is required')
+
+    // experience validation
+    if (!experience) return res.status(400).send('experience is required')
+
+    // department validation
+    if (!department) return res.status(400).send('department is required')
 
     // Email validation
     if (!email) return res.status(400).send('Email is required')
