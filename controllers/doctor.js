@@ -33,7 +33,7 @@ export const uploadImage = async (req, res) => {
 export const doctorRegistration = async (req, res) => {
   try {
     // Data From Front-End
-    const { name, email, image, degree, experience, department } = req.body
+    const { name, email, image, degree, experience, department, fee } = req.body
 
     //validation
     if (!name) return res.status(400).send('Name is required')
@@ -42,6 +42,7 @@ export const doctorRegistration = async (req, res) => {
     if (!experience) return res.status(400).send('experience is required')
     if (!department) return res.status(400).send('department is required')
     if (!email) return res.status(400).send('Email is required')
+    if (!fee) return res.status(400).send('Fee is required')
     let userExist = await User.findOne({ email }).exec()
     if (!userExist)
       return res
@@ -59,6 +60,7 @@ export const doctorRegistration = async (req, res) => {
         degree,
         experience,
         department,
+        fee,
       },
       {
         new: true,
@@ -129,6 +131,7 @@ export const doctors = async (req, res) => {
 // Get a single Doctor
 export const read = async (req, res) => {
   const id = req.params.doctorId
+  console.log(id)
   try {
     const doctor = await User.findOne({ _id: id }).exec()
     res.json(doctor)
