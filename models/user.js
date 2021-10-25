@@ -40,10 +40,39 @@ const userSchema = new Schema(
     fee: {
       type: Number,
     },
-    experience: {
+    biography: {
       type: String,
       trim: true,
     },
+    hospital: {
+      type: String,
+      trim: true,
+    },
+    form: {
+      type: String,
+      trim: true,
+    },
+    to: {
+      type: String,
+      trim: true,
+    },
+    designation: {
+      type: String,
+      trim: true,
+    },
+    address: {
+      type: String,
+      trim: true,
+    },
+    city: {
+      type: String,
+      trim: true,
+    },
+    country: {
+      type: String,
+      trim: true,
+    },
+
     stripe_account_id: '',
     stripe_seller: {},
     stripeSession: {},

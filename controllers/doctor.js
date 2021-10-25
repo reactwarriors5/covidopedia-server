@@ -33,16 +33,40 @@ export const uploadImage = async (req, res) => {
 export const doctorRegistration = async (req, res) => {
   try {
     // Data From Front-End
-    const { name, email, image, degree, experience, department, fee } = req.body
+    const {
+      name,
+      email,
+      image,
+      degree,
+      department,
+      fee,
+      biography,
+      hospital,
+      form,
+      to,
+      designation,
+      address,
+      city,
+      country,
+    } = req.body
 
     //validation
     if (!name) return res.status(400).send('Name is required')
     if (!image) return res.status(400).send('image is required')
     if (!degree) return res.status(400).send('degree is required')
-    if (!experience) return res.status(400).send('experience is required')
     if (!department) return res.status(400).send('department is required')
     if (!email) return res.status(400).send('Email is required')
     if (!fee) return res.status(400).send('Fee is required')
+    if (!biography) return res.status(400).send('Biography is required')
+
+    if (!hospital) return res.status(400).send('Hospital is required')
+    if (!form) return res.status(400).send('Form is required')
+    if (!to) return res.status(400).send('To is required')
+    if (!designation) return res.status(400).send('Designation is required')
+    if (!address) return res.status(400).send('Address is required')
+    if (!city) return res.status(400).send('City is required')
+    if (!country) return res.status(400).send('Country is required')
+
     let userExist = await User.findOne({ email }).exec()
     if (!userExist)
       return res
@@ -58,9 +82,16 @@ export const doctorRegistration = async (req, res) => {
         name,
         image,
         degree,
-        experience,
         department,
         fee,
+        biography,
+        hospital,
+        form,
+        to,
+        designation,
+        address,
+        city,
+        country,
       },
       {
         new: true,
