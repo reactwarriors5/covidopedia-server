@@ -48,7 +48,7 @@ const userSchema = new Schema(
       type: String,
       trim: true,
     },
-    form: {
+    from: {
       type: String,
       trim: true,
     },

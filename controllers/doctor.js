@@ -42,7 +42,7 @@ export const doctorRegistration = async (req, res) => {
       fee,
       biography,
       hospital,
-      form,
+      from,
       to,
       designation,
       address,
@@ -60,7 +60,7 @@ export const doctorRegistration = async (req, res) => {
     if (!biography) return res.status(400).send('Biography is required')
 
     if (!hospital) return res.status(400).send('Hospital is required')
-    if (!form) return res.status(400).send('Form is required')
+    if (!from) return res.status(400).send('From is required')
     if (!to) return res.status(400).send('To is required')
     if (!designation) return res.status(400).send('Designation is required')
     if (!address) return res.status(400).send('Address is required')
@@ -86,7 +86,7 @@ export const doctorRegistration = async (req, res) => {
         fee,
         biography,
         hospital,
-        form,
+        from,
         to,
         designation,
         address,
