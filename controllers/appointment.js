@@ -69,6 +69,11 @@ export const patientAppointments = async (req, res) => {
   // console.log("============> ", all);
   res.json(all)
 }
+// Get all patient
+export const patients= async (req, res) => {
+  const all = await Appointment.find().exec()
+  res.json(all)
+}
 
 export const doctorAppointments = async (req, res) => {
   const all = await Appointment.find({ doctor: req.user._id })
