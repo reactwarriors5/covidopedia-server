@@ -10,10 +10,12 @@ import {
   setAppointment,
   doctorAppointments,
   stripeSuccess,
+  patients,
 } from '../controllers/appointment'
 
 // Routes
 router.get('/patient-appointments', requireSignin, patientAppointments)
+router.get('/allPatient', patients)
 router.get('/doctor-appointments', requireSignin, doctorAppointments)
 
 router.post('/appointment', requireSignin, setAppointment)
