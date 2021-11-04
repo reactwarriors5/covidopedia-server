@@ -60,3 +60,33 @@ export const welcomeEmail = async (userEmail, userName, userId) => {
 
   console.log('Message sent: ', info.messageId)
 }
+
+export const prescriptionEmail = async ({ userEmail, prescriptionUrl }) => {
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.EMAIL_ID, // Email Address(Gmail)
+      pass: process.env.PASSWORD, // Password(App Password)
+    },
+  })
+
+  // send mail with defined transport object
+  let info = await transporter
+    .sendMail({
+      from: '"Covidopedia" <support@covidopedia.com>', // sender address
+      to: userEmail, // list of receivers or a single receiver
+      subject: 'Download Prescription | Covidopedia', // Subject line
+      html: `
+      <h1>Download Prescription</h1>
+      <p>You can download your prescription by clicking on the link below.</p>
+      <p><a href=${prescriptionUrl}>Download Prescription</a></p>
+      <b>&#169; Covidopedia</b>`, // html body
+    })
+    .catch(error => {
+      console.log(error)
+    })
+
+  console.log('Message sent: ', info.messageId)
+}
