@@ -146,7 +146,7 @@ module.exports = ({
               <table>
                 <tr>
                   <td>Medicine Name: ${medicine}</td>
-                  <td>খাওয়ার নিয়ম: দিনে দুই বার</td>
+                  
                 </tr>
               </table>
             </td>
