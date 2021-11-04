@@ -1,6 +1,16 @@
 import User from '../models/user'
 import Appointment from '../models/appointment'
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
+const pdf = require('html-pdf')
+import { unlink, readFileSync } from 'fs'
+const pdfTemplate = require('../documents')
+const cloudinary = require('cloudinary').v2
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+})
+import { prescriptionEmail } from '../utils/mail'
 
 export const setAppointment = async (req, res) => {
   try {
@@ -70,7 +80,7 @@ export const patientAppointments = async (req, res) => {
   res.json(all)
 }
 // Get all patient
-export const patients= async (req, res) => {
+export const patients = async (req, res) => {
   const all = await Appointment.find().exec()
   res.json(all)
 }
@@ -110,4 +120,68 @@ export const stripeSuccess = async (req, res) => {
     console.log('Stripe Success Error-->', err)
     res.json({ success: false })
   }
+}
+
+export const createPdf = async (req, res) => {
+  const data = req.body
+  const doctorDetails = await User.findOne({ _id: data.doctor }).exec()
+  const { name, department } = doctorDetails
+  const pdfData = { ...data, name, department }
+
+  pdf.create(pdfTemplate(pdfData), {}).toFile('prescription.pdf', err => {
+    if (err) {
+      res.send(Promise.reject())
+    }
+    res.send(Promise.resolve())
+  })
+}
+
+export const uploadPdf = async (req, res) => {
+  const appointment = await Appointment.findById(req.body.appointmentId).exec()
+  // return console.log(appointment)
+  cloudinary.uploader.upload(
+    `${process.cwd()}/prescription.pdf`,
+    { flag: 'attachment' },
+    function (error, result) {
+      if (error) {
+        console.log(error)
+        return res.sendStatus(400)
+      }
+      // Delete pdf from server directory
+      unlink(`${process.cwd()}/prescription.pdf`, err => {
+        if (err) throw err
+        console.log(`Successfully deleted ${process.cwd()}/prescription.pdf`)
+      })
+      const emailData = {
+        userEmail: appointment.email,
+        prescriptionUrl: result.secure_url,
+      }
+      prescriptionEmail(emailData)
+      updateStatus(result.secure_url)
+    }
+  )
+
+  const updateStatus = async url => {
+    const statusUpdated = await Appointment.findByIdAndUpdate(
+      req.body.appointmentId,
+      {
+        status: 'Complete',
+        prescription: url,
+      },
+      { new: true }
+    ).exec()
+    res.json(statusUpdated)
+    console.log(statusUpdated)
+  }
+}
+
+// export const fetchPdf = async (req, res) => {
+//   res.sendFile(`${process.cwd()}/prescription.pdf`)
+// }
+
+export const deletePdf = async (req, res) => {
+  unlink(`${process.cwd()}/prescription.pdf`, err => {
+    if (err) throw err
+    console.log(`Successfully deleted ${process.cwd()}/prescription.pdf`)
+  })
 }

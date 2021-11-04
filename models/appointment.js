@@ -13,6 +13,14 @@ const appointmentSchema = new Schema(
       type: Number,
       required: true,
     },
+    fee: {
+      type: Number,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
     gender: {
       type: String,
       required: true,
@@ -30,6 +38,13 @@ const appointmentSchema = new Schema(
       type: ObjectId,
       ref: 'User',
       required: true,
+    },
+    status: {
+      type: String,
+      default: 'Pending',
+    },
+    prescription: {
+      type: String,
     },
   },
   { timestamps: true }
